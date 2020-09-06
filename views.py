@@ -37,4 +37,7 @@ def delete_task_by_id(task_id):
 @view_blueprint.route('/update/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     task_name = request.args.get("name")
-    return jsonify(controllers.update_task(task_id, task_name))
+    task_status = request.args.get("status")
+    task_description = request.args.get("description")
+    task_project_id = request.args.get("project_id")
+    return jsonify(controllers.update_task(task_id, task_name, task_status, task_description, task_project_id))
