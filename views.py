@@ -1,6 +1,10 @@
 from flask import Blueprint, jsonify, request
+from flask_cors import cross_origin, CORS
+import requests
 import controllers
+
 view_blueprint = Blueprint('view_blueprint', __name__)
+CORS(view_blueprint, resources={r'/*': {"origins": "localhost:5015"}})
 
 
 @view_blueprint.route('/', methods=['GET'])
@@ -21,7 +25,20 @@ def get_tasks():
 
 @view_blueprint.route('/view/<int:task_id>', methods=['GET'])
 def get_task(task_id):
-    return jsonify(controllers.get_task(task_id))
+    task = controllers.get_task(task_id)
+    projectResponse = requests.get('http://localhost:5010/view/' + str(task[0]['project_id']))
+    project = projectResponse.json()
+    task[0]['project'] = project[0]
+    return jsonify(task)
+
+
+@view_blueprint.route('/view/project/<int:task_id>', methods=['GET'])
+def get_task_project(task_id):
+    task = controllers.get_task(task_id)
+    projectResponse = requests.get('http://localhost:5010/view/' + str(task[0]['project_id']))
+    project = projectResponse.json()
+
+    return jsonify(project[0])
 
 
 @view_blueprint.route('/view/<string:task_name>', methods=['GET'])
@@ -34,6 +51,7 @@ def delete_task_by_id(task_id):
     return jsonify(controllers.delete_task_by_id(task_id))
 
 
+@cross_origin()
 @view_blueprint.route('/update/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     task_name = request.args.get("name")

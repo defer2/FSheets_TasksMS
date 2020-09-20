@@ -1,4 +1,6 @@
 from flask_marshmallow.sqla import SQLAlchemyAutoSchema
+from sqlalchemy import Column, Unicode
+
 from database import db
 
 
@@ -15,3 +17,6 @@ class TasksSchema(SQLAlchemyAutoSchema):
         model = Tasks
         include_relationships = True
         load_instance = True
+
+
+

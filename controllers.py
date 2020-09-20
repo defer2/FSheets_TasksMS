@@ -17,7 +17,8 @@ def get_tasks():
 
 
 def get_task(task_id):
-    return TasksSchema(many=True).dump(db.session.query(Tasks).filter(Tasks.id == task_id))
+    task = db.session.query(Tasks).filter(Tasks.id == task_id)
+    return TasksSchema(many=True).dump(task)
 
 
 def get_task_by_name(task_name):
