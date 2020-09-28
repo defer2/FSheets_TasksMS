@@ -34,7 +34,7 @@ def delete_task_by_id(task_id):
 
 def update_task(task_id, task_name, task_status, task_description, project_id):
     one_task = db.session.query(Tasks).filter_by(id=task_id).one()
-    one_task.name = task_name
+    one_task.name = task_name or one_task.name
     one_task.status = task_status or one_task.status
     one_task.description = task_description or one_task.description
     one_task.project_id = project_id or one_task.project_id
