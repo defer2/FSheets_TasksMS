@@ -2,8 +2,12 @@ from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
 import requests
 import controllers
+import configparser
+config = configparser.ConfigParser()
+config.read("config.ini")
 
 view_blueprint = Blueprint('view_blueprint', __name__)
+api_projects_url = ppm_username = config.get("FTIMESHEETS", "API_PROJECTS_URL")
 
 
 @view_blueprint.route('/', methods=['GET'])
@@ -30,7 +34,7 @@ def get_tasks():
 def get_task(task_id):
     task = controllers.get_task(task_id)
     try:
-        projectResponse = requests.get('http://192.168.0.50:5010/view/' + str(task[0]['project_id']))
+        projectResponse = requests.get(api_projects_url+'/view/' + str(task[0]['project_id']))
         project = projectResponse.json()
         task[0]['project'] = project[0]
     except:
@@ -44,7 +48,7 @@ def get_task(task_id):
 def get_task_project(task_id):
     task = controllers.get_task(task_id)
     try:
-        projectResponse = requests.get('http://192.168.0.50:5010/view/' + str(task[0]['project_id']))
+        projectResponse = requests.get(api_projects_url+'/view/' + str(task[0]['project_id']))
         project = projectResponse.json()
         return jsonify(project[0])
     except:

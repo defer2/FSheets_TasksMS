@@ -22,11 +22,12 @@ def setup_database(app_tasks):
         db.create_all()
 
 
-if __name__ == '__main__':
-    app = create_app()
-    cors = CORS(app)
+app = create_app()
+cors = CORS(app)
 
+if __name__ == '__main__':
     if not os.path.isfile('database/tasks.db'):
         setup_database(app)
 
     app.run(host='192.168.0.50', port=5011)
+
