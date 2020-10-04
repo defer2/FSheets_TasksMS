@@ -1,6 +1,3 @@
-#!/bin/zsh
-app="tasks"
-docker build -t ${app} .
-docker run -p 5011:5011 \
-  --name=${app} \
-  -v $PWD:/app ${app}
+#!/usr/bin/env bash
+service nginx start
+uwsgi --ini uwsgi.ini

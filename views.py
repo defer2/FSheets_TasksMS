@@ -1,13 +1,17 @@
+import os
 from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
 import requests
 import controllers
 import configparser
-config = configparser.ConfigParser()
-config.read("config.ini")
-
 view_blueprint = Blueprint('view_blueprint', __name__)
-api_projects_url = ppm_username = config.get("FTIMESHEETS", "API_PROJECTS_URL")
+
+
+config = configparser.ConfigParser()
+config_path = os.path.join('conf', 'config.ini')
+config.read(config_path)
+api_projects_url = config.get('FTIMESHEETS', 'API_PROJECTS_URL')
+
 
 
 @view_blueprint.route('/', methods=['GET'])
