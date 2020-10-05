@@ -13,7 +13,6 @@ config.read(config_path)
 api_projects_url = config.get('FTIMESHEETS', 'API_PROJECTS_URL')
 
 
-
 @view_blueprint.route('/', methods=['GET'])
 @cross_origin()
 def hello_world():
@@ -30,7 +29,17 @@ def create_task():
 @view_blueprint.route('/view', methods=['GET'])
 @cross_origin()
 def get_tasks():
-    return jsonify(controllers.get_tasks())
+    tasks = controllers.get_tasks()
+
+    for task in tasks:
+        try:
+            projectResponse = requests.get(api_projects_url + '/view/' + str(task['project_id']))
+            project = projectResponse.json()
+            task['project'] = project[0]
+        except:
+            task['project'] = '{}'
+
+    return jsonify(tasks)
 
 
 @view_blueprint.route('/view/<int:task_id>', methods=['GET'])
