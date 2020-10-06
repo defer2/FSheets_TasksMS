@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, abort, Response
 from flask_cors import cross_origin
 import requests
 import controllers
@@ -23,7 +23,15 @@ def hello_world():
 @cross_origin()
 def create_task():
     task_name = request.args.get("name")
-    return jsonify(controllers.create_task(task_name))
+
+    try:
+        result = controllers.create_task(task_name)
+        if result:
+            return get_task_by_name(task_name)
+        else:
+            abort(Response(jsonify('{}'), 403))
+    except:
+        abort(Response(jsonify('{}'), 403))
 
 
 @view_blueprint.route('/view', methods=['GET'])
@@ -71,7 +79,15 @@ def get_task_project(task_id):
 @view_blueprint.route('/view/<string:task_name>', methods=['GET'])
 @cross_origin()
 def get_task_by_name(task_name):
-    return jsonify(controllers.get_task_by_name(task_name))
+    task = controllers.get_task_by_name(task_name)
+    try:
+        projectResponse = requests.get(api_projects_url + '/view/' + str(task[0]['project_id']))
+        project = projectResponse.json()
+        task[0]['project'] = project[0]
+    except:
+        task[0]['project'] = '{}'
+
+    return jsonify(task)
 
 
 @view_blueprint.route('/delete/<int:task_id>', methods=['DELETE'])
@@ -87,4 +103,15 @@ def update_task(task_id):
     task_status = request.args.get("status")
     task_description = request.args.get("description")
     task_project_id = request.args.get("project_id")
-    return jsonify(controllers.update_task(task_id, task_name, task_status, task_description, task_project_id))
+
+    try:
+        result = controllers.update_task(task_id, task_name, task_status, task_description, task_project_id)
+        if result:
+            return get_task(task_id)
+        else:
+            abort(jsonify('{}'), 403)
+    except:
+        abort(jsonify('{}', 403))
+
+
+
