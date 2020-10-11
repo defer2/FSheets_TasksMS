@@ -58,7 +58,8 @@ def get_task(task_id):
         projectResponse = requests.get(api_projects_url+'/view/' + str(task[0]['project_id']))
         project = projectResponse.json()
         task[0]['project'] = project[0]
-    except:
+    except Exception as e:
+        print(e)
         task[0]['project'] = '{}'
 
     return jsonify(task)

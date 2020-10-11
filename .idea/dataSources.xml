@@ -13,5 +13,17 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/../FSheets_ClientsMS/database/clients.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="projects.db" uuid="e6ff0c41-ec30-4244-98a7-8753f9f32bf0">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/../sheets/projects/database/projects.db</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="Tasks.db" uuid="c4c8468d-86c7-4d65-894f-8bf60447ce3d">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/database/Tasks.db</jdbc-url>
+    </data-source>
   </component>
 </project>

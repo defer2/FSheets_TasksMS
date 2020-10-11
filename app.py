@@ -29,5 +29,5 @@ if __name__ == '__main__':
     if not os.path.isfile('database/tasks.db'):
         setup_database(app)
 
-    app.run(host='192.168.0.50', port=5011)
+    app.run(host='192.168.0.50', port=5021)
 
