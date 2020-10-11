@@ -16,6 +16,7 @@ def create_task(task_name):
     except:
         return False
 
+
 def get_tasks():
     return TasksSchema(many=True).dump(Tasks.query.all())
 
