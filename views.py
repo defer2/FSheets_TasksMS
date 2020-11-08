@@ -6,11 +6,14 @@ import controllers
 import configparser
 view_blueprint = Blueprint('view_blueprint', __name__)
 
-
 config = configparser.ConfigParser()
 config_path = os.path.join('conf', 'config.ini')
 config.read(config_path)
-api_projects_url = config.get('FTIMESHEETS', 'API_PROJECTS_URL')
+api_settings_url = config.get('FTIMESHEETS', 'API_SETTINGS_URL')
+
+settingsResponse = requests.get(api_settings_url + '/view')
+settings = settingsResponse.json()
+api_projects_url = settings[0]['API_PROJECTS_URL']
 
 
 @view_blueprint.route('/', methods=['GET'])
